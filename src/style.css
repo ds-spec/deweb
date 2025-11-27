@@ -1,10 +1,44 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@import "tailwindcss";
+
+@font-face {
+  font-family: "MyFont-1";
+  src: url("/fonts/font-1.woff2") format("woff2");
 }
 
-body {
-  width: 100%;
-  height: 100%;
+@font-face {
+  font-family: "MyFont-2";
+  src: url("/fonts/font-2.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "MyFont-3";
+  src: url("/fonts/font-3.otf") format("otf");
+}
+
+@font-face {
+  font-family: "SF Pro Light";
+  src: url("/fonts/SF-Pro-Light.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "SF Pro Regular";
+  src: url("/fonts/SF-Pro-Regular.woff2") format("woff2");
+}
+
+@theme {
+  --font-primary: "MyFont-1", sans-serif;
+  --font-secondary: "MyFont-2", sans-serif;
+  --font-tertiary: "MyFont-3", sans-serif;
+  --font-sf-light: "SF Pro Light", sans-serif;
+  --font-sf-regular: "SF Pro Regular", sans-serif;
+  --animate-marquee: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
