@@ -48,6 +48,17 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
 });
 
+gsap.set(".cursor", { xPercent: -50, yPercent: -50 });
+
+let xTo = gsap.quickTo(".cursor", "x", { duration: 0.6, ease: "power3" });
+let yTo = gsap.quickTo(".cursor", "y", { duration: 0.6, ease: "power3" });
+
+window.addEventListener("mousemove", (e) => {
+  // 3. Bas value pass karo, koi 'px' ya calculation nahi
+  xTo(e.clientX);
+  yTo(e.clientY);
+});
+
 const design = document.querySelector(".design");
 const development = document.querySelector(".development");
 const branding = document.querySelector(".branding");
@@ -146,7 +157,6 @@ tl_menu
   );
 
 const mainDiv = document.querySelector(".main-div");
-const menuContent = document.querySelector(".menu-content");
 
 const tl_menuFullScreen = gsap.timeline({ paused: true });
 
@@ -161,7 +171,17 @@ tl_menuFullScreen
       ease: "power2.inOut",
       duration: 0.8,
       pointerEvents: "all",
-    }
+    },
+    "hrefs-out"
+  )
+  .to(
+    ".hrefs",
+    {
+      opacity: 0,
+      y: -40,
+      ease: "power2.inOut",
+    },
+    "hrefs-out"
   )
   .to(
     ".menu-content",

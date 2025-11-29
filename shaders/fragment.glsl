@@ -23,7 +23,7 @@ void main() {
 
   float smoothstep = smoothstep(-.5, 1., vElevation);
   vec4 defaultColor = mix(c1, c2, smoothstep);
-  vec4 color2 = mix(c3, c4, smoothstep);
+  vec4 scrollColor = mix(c3, c4, smoothstep);
 
   vec4 hover1 = mix(P1a, P1b, smoothstep);
   vec4 hover2 = mix(P2a, P2b, smoothstep);
@@ -31,21 +31,17 @@ void main() {
   
   vec4 hoverColor;
 
-if(uHoverIndex < 0.5){
-  hoverColor = defaultColor;
-}else if(uHoverIndex < 1.5){
-  hoverColor = hover1;
-}else if(uHoverIndex < 2.5){
-  hoverColor = hover2;
-}else{
-  hoverColor = hover3;
-}
-
-    // uHoverIndex < 0.5 ? hover1 : uHoverIndex < 1.5 ? hover1 : uHoverIndex < 2.5 ? hover2 : uHoverIndex < 3.5 ? hover3 : defaultColor;
+  if(uHoverIndex < 0.5){
+    hoverColor = defaultColor;
+  }else if(uHoverIndex < 1.5){
+    hoverColor = hover1;
+  }else if(uHoverIndex < 2.5){
+    hoverColor = hover2;
+  }else{
+    hoverColor = hover3;
+  }
 
   vec4 blendColor = mix(defaultColor, hoverColor, uBlendFactor);
-
-  vec4 scrollColor = mix(defaultColor, color2, smoothstep);
 
   vec4 finalColor = mix(blendColor, scrollColor, uColorChange);
 
