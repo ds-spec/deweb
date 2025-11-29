@@ -43,7 +43,7 @@ void main() {
 
   vec4 blendColor = mix(defaultColor, hoverColor, uBlendFactor);
 
-  vec4 finalColor = mix(blendColor, scrollColor, uColorChange);
+  vec4 finalColor = mix(blendColor, defaultColor, uColorChange);
 
   gl_FragColor = finalColor;
 }

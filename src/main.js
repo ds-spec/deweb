@@ -26,11 +26,15 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.z = 4;
 
-const geometry = new THREE.SphereGeometry(2.7, 100, 100);
+const geometry = new THREE.SphereGeometry(2.7, 250, 128);
 const material = new THREE.ShaderMaterial({
   vertexShader,
+  // wireframe: true,
   fragmentShader,
   side: THREE.DoubleSide,
+  // transparent: true,
+  // depthWrite: true,
+  // blending: THREE.AdditiveBlending,
   uniforms: {
     uTime: { value: 0 },
     uColorChange: { value: 0 },
@@ -62,6 +66,29 @@ window.addEventListener("mousemove", (e) => {
 const design = document.querySelector(".design");
 const development = document.querySelector(".development");
 const branding = document.querySelector(".branding");
+const magnet = document.querySelector(".magnet");
+const magnetWrapper = document.querySelector(".magnet-wrapper");
+
+const xCo = gsap.quickTo(magnet, "x", { ease: "elastic.inOut" });
+const yCo = gsap.quickTo(magnet, "y", { ease: "elastic.inOut" });
+
+magnetWrapper.addEventListener("mousemove", (e) => {
+  const rect = magnetWrapper.getBoundingClientRect();
+  const x = e.clientX - rect.left - rect.width / 2;
+  const y = e.clientY - rect.top - rect.height / 2;
+  xCo(x * 0.3);
+  yCo(y * 0.3);
+});
+
+magnet.addEventListener("mouseleave", () => {
+  gsap.to(magnet, {
+    x: 0,
+    y: 0,
+    ease: "elastic.inOut",
+    duration: 1,
+    overwrite: true,
+  });
+});
 
 function setColor(i) {
   material.uniforms.uHoverIndex.value = i + 1;
