@@ -1,0 +1,18 @@
+ <svg
+              class="menuLines l1 transition-all duration-300"
+              xmlns="http://www.w3.org/2000/svg"
+              width="27"
+              height="3"
+              viewBox="0 0 27 3"
+            >
+              <rect width="25" height="2.5" rx="1.5" fill="#1a1a1a" />
+            </svg>
+            <svg
+              class="menuLines l2 transition-all duration-300 mt-1"
+              xmlns="http://www.w3.org/2000/svg"
+              width="27"
+              height="3"
+              viewBox="0 0 27 3"
+            >
+              <rect width="25" height="2.5" rx="1.5" fill="#1a1a1a" />
+            </svg>

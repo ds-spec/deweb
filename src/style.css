@@ -25,12 +25,19 @@
   src: url("/fonts/SF-Pro-Regular.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "SF Pro Medium";
+  src: url("/fonts/SF-Pro-Medium.woff2") format("woff2");
+  font-weight: 400;
+}
+
 @theme {
   --font-primary: "MyFont-1", sans-serif;
   --font-secondary: "MyFont-2", sans-serif;
   --font-tertiary: "MyFont-3", sans-serif;
   --font-sf-light: "SF Pro Light", sans-serif;
   --font-sf-regular: "SF Pro Regular", sans-serif;
+  --font-sf-medium: "SF Pro Medium", sans-serif;
   --animate-marquee: marquee 30s linear infinite;
 }
 
@@ -41,4 +48,8 @@
   100% {
     transform: translateX(-100%);
   }
+}
+
+button {
+  cursor: pointer;
 }

@@ -34,6 +34,8 @@ const material = new THREE.ShaderMaterial({
   uniforms: {
     uTime: { value: 0 },
     uColorChange: { value: 0 },
+    uHoverIndex: { value: 0 },
+    uBlendFactor: { value: 0 },
   },
 });
 const sphere = new THREE.Mesh(geometry, material);
@@ -46,45 +48,172 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
 });
 
-let tl = gsap.timeline({
+const design = document.querySelector(".design");
+const development = document.querySelector(".development");
+const branding = document.querySelector(".branding");
+
+function setColor(i) {
+  material.uniforms.uHoverIndex.value = i + 1;
+}
+
+function blendColor() {
+  gsap.killTweensOf(material.uniforms.uBlendFactor);
+  gsap.to(material.uniforms.uBlendFactor, {
+    value: 1.0,
+    duration: 0.4,
+    ease: "power2.inOut",
+  });
+}
+
+function resetColor() {
+  gsap.killTweensOf(material.uniforms.uBlendFactor);
+  gsap.to(material.uniforms.uBlendFactor, {
+    value: 0.0,
+    duration: 0.6,
+    ease: "expo.inOut",
+    onComplete: () => {
+      material.uniforms.uHoverIndex.value = 0;
+    },
+  });
+}
+
+let leaveTimeout;
+design.addEventListener("mouseenter", () => {
+  clearTimeout(leaveTimeout);
+  blendColor();
+  setColor(0);
+});
+development.addEventListener("mouseenter", () => {
+  clearTimeout(leaveTimeout);
+  blendColor();
+  setColor(1);
+});
+branding.addEventListener("mouseenter", () => {
+  clearTimeout(leaveTimeout);
+  blendColor();
+  setColor(2);
+});
+design.addEventListener("mouseleave", () => resetColor());
+development.addEventListener("mouseleave", () => resetColor());
+branding.addEventListener("mouseleave", () => resetColor());
+
+let tl_nav = gsap.timeline({
   scrollTrigger: {
-    trigger: ".landing-hero",
-    start: "top 60%",
+    trigger: "nav",
+    start: "top top",
     end: "bottom top",
     scrub: 2,
-    // markers: true,
   },
 });
 
-// tl.to(
-//   ".logo-transform",
-//   {
-//     opacity: 1,
-//     ease: "power2.inOut",
-//     duration: 0.5,
-//   },
-//   "swap"
-// )
-//   .to(
-//     ".logo",
-//     {
-//       opacity: 0,
-//       y: -5,
-//       ease: "power2.inOut",
-//     },
-//     "swap"
-//   )
-tl.to(".logo", { opacity: 0, duration: 0 }, "swap")
-  .to(".logo-transform", { opacity: 1, duration: 0 }, "swap")
-  .to(sphere.position, {
-    y: 0.5,
-    z: -2,
-    ease: "power2.inOut",
-  })
+tl_nav
+  .to(".logo", { opacity: 0, ease: "power2.inOut" }, "swap")
+  .to(".logo-transform", { opacity: 1, ease: "power2.inOut" }, "swap")
+  .from(
+    ".logo-transform",
+    { y: -20, overflow: "hidden", ease: "power2.inOut" },
+    "swap"
+  );
+tl_nav.to(".hrefs", { opacity: 0, y: -40, ease: "power2.inOut" }, "swap");
+
+const button = document.querySelector(".menu-button");
+
+gsap.set(".l1", { y: -3 });
+gsap.set(".l2", { y: 3 });
+
+const tl_menu = gsap.timeline({ paused: true });
+
+tl_menu
+  .to(
+    ".l1",
+    {
+      rotate: -45,
+      y: 0,
+      ease: "power2.inOut",
+      transformOrigin: "center center",
+    },
+    "lines"
+  )
+  .to(
+    ".l2",
+    {
+      rotate: 45,
+      y: 0,
+      ease: "power2.inOut",
+      transformOrigin: "center center",
+    },
+    "lines"
+  );
+
+const mainDiv = document.querySelector(".main-div");
+const menuContent = document.querySelector(".menu-content");
+
+const tl_menuFullScreen = gsap.timeline({ paused: true });
+
+tl_menuFullScreen
+  .fromTo(
+    ".menu-overlay",
+    {
+      clipPath: "circle(0% at 94% 4%)",
+    },
+    {
+      clipPath: "circle(150% at 94% 4%)",
+      ease: "power2.inOut",
+      duration: 0.8,
+      pointerEvents: "all",
+    }
+  )
+  .to(
+    ".menu-content",
+    {
+      opacity: 1,
+      duration: 0.4,
+    },
+    "-=0.4"
+  );
+
+button.addEventListener("click", () => {
+  if (tl_menu.reversed() || tl_menu.paused()) {
+    tl_menu.play();
+    // menuOpen();
+    // tl_menuFullScreen.play();
+    // menuDiv.classList.remove("hidden");
+    // mainDiv.classList.add("hidden");
+  } else {
+    tl_menu.reverse();
+  }
+  if (tl_menuFullScreen.reversed() || tl_menuFullScreen.paused()) {
+    tl_menuFullScreen.play();
+    mainDiv.classList.add("hidden");
+  } else {
+    tl_menuFullScreen.reverse();
+    mainDiv.classList.remove("hidden");
+  }
+});
+
+let tl_hero = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".main-div",
+    start: "top 60%",
+    end: "bottom top",
+    scrub: 2,
+  },
+});
+
+tl_hero
+  .to(
+    sphere.position,
+    {
+      y: 0.5,
+      z: -2,
+      ease: "power2.inOut",
+    },
+    "a"
+  )
   .to(
     material.uniforms.uColorChange,
     {
-      value: 0,
+      value: 1,
       ease: "power2.inOut",
     },
     "a"
